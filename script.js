@@ -64,3 +64,50 @@ function submitAnswer(answer) {
   answer.focus();
   return false;
 }
+function submitAnswer(answer) {
+  // search the DOM for a specific tag with the id "answerlist"
+  var answerlist = document.getElementById("answerlist");
+  var currentanswers = localStorage.getItem("answerlist");
+  localStorage.setItem("answerlist", currentanswers + "<br />" + answer.value);
+  answerlist.innerHTML += "<br />" + answer.value;
+  answer.value = "";
+  answer.focus();
+  return false;
+}
+function checkStorage() {
+  var answerlist = document.getElementById("answerlist");
+  var currentanswers = localStorage.getItem("answerlist");
+  answerlist.innerHTML = currentanswers;
+}
+function clearStorage() {
+  var answerlist = document.getElementById("answerlist");
+  answerlist.innerHTML = "";
+  localStorage.setItem("answerlist","");
+}
+function loadRemote() {
+
+  $.get("load.php",{},function(data) {
+
+    data = JSON.parse(data);
+
+    console.log(data);
+
+    console.log("row by row:");
+
+    var html = "";
+
+    for (var i in data) {
+
+      console.log(data[i]);
+
+      if (data[i])
+
+        html += "<li>" + data[i] + "</li>";
+
+    }
+
+    $("#guestlist").html(html);
+
+  });
+
+}
